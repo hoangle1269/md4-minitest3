@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UPDATE</title>
+</head>
+<body>
+<h1>Update computer</h1>
+<p>
+    <a href="/computers">Computer list</a>
+</p>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form th:action="@{/computers/update}" th:object="${computer}" method="post">
+    <input th:type="hidden" name="id" th:field="*{computerId}">
+    <table>
+        <tr>
+            <td>Computer code</td>
+            <td><input type="text" th:field="*{computerCode}"/></td>
+
+        <tr>
+            <td>Computer name</td>
+            <td><input type="text" th:field="*{computerName}"/></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><input type="text" th:field="*{description}"/></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" th:field="*{price}"/></td>
+        </tr>
+        <tr>
+            <td>Img</td>
+            <td><input type="text" th:field="*{img}"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Update computer"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
