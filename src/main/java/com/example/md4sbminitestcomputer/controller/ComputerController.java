@@ -38,21 +38,31 @@ public class ComputerController {
         return modelAndView;
     }
 
+    @Value("${file-upload}")
+    private String upload;
+
     @GetMapping("/create")
     public ModelAndView showCreateForm() {
         ModelAndView modelAndView = new ModelAndView("/computer/create");
         modelAndView.addObject("computer", new Computer());
         return modelAndView;
     }
+//
+//    @PostMapping("/create")
+//    public ModelAndView saveCustomer(@ModelAttribute("computer") Computer computer) {
+//        computerService.save(computer);
+//        ModelAndView modelAndView = new ModelAndView("/computer/create");
+//        modelAndView.addObject("computer", new Computer());
+//        modelAndView.addObject("message", "New computer created successfully");
+//        return modelAndView;
+//    }
 
-    @PostMapping("/create")
-    public ModelAndView saveCustomer(@ModelAttribute("computer") Computer computer) {
-        computerService.save(computer);
-        ModelAndView modelAndView = new ModelAndView("/computer/create");
-        modelAndView.addObject("computer", new Computer());
-        modelAndView.addObject("message", "New computer created successfully");
-        return modelAndView;
+    @PostMapping("/save")
+    public String save(ComputerForm computerForm) {
+        return getComputerInfo(computerForm);
+
     }
+
 
     @GetMapping("/update/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) {
@@ -65,15 +75,46 @@ public class ComputerController {
             return new ModelAndView("/error_404");
         }
     }
+//
+//    @PostMapping("/update")
+//    public ModelAndView updateCustomer(@ModelAttribute("computer") Computer computer) {
+//        computerService.save(computer);
+//        ModelAndView modelAndView = new ModelAndView("/computer/update");
+//        modelAndView.addObject("computer", computer);
+//        modelAndView.addObject("message", "Computer updated successfully");
+//        return modelAndView;
+//    }
 
     @PostMapping("/update")
-    public ModelAndView updateCustomer(@ModelAttribute("computer") Computer computer) {
-        computerService.save(computer);
-        ModelAndView modelAndView = new ModelAndView("/computer/update");
-        modelAndView.addObject("computer", computer);
-        modelAndView.addObject("message", "Computer updated successfully");
-        return modelAndView;
+    public String update(ComputerForm computerForm) {
+        return getComputerInfo(computerForm);
+
     }
+
+    private String getComputerInfo(ComputerForm computerForm) {
+        MultipartFile file = computerForm.getImg();
+
+        String fileName = file.getOriginalFilename();
+
+        try {
+            FileCopyUtils.copy(file.getBytes(), new File(upload + fileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            Computer computer = new Computer();
+            computer.setComputerId(computerForm.getComputerId());
+            computer.setComputerCode(computerForm.getComputerCode());
+            computer.setComputerName(computerForm.getComputerName());
+            computer.setPrice(String.valueOf(computerForm.getPrice()));
+            computer.setManufacturer(computerForm.getManufacturerId());
+            computer.setDescription(computerForm.getDescription());
+            computer.setImg(fileName);
+            computerService.save(computer);
+            return "redirect:/computers";
+        }
+    }
+
 
     @GetMapping("/delete/{id}")
     public ModelAndView showDeleteForm(@PathVariable Long id) {

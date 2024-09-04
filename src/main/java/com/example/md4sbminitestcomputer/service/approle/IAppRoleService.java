@@ -4,4 +4,5 @@ import com.example.md4sbminitestcomputer.model.AppRole;
 import com.example.md4sbminitestcomputer.service.IGenerateService;
 
 public interface IAppRoleService extends IGenerateService<AppRole>  {
+    AppRole findByAppRoleName(String name);
 }

@@ -1,5 +1,6 @@
 package com.example.md4sbminitestcomputer.config;
 
+import com.example.md4sbminitestcomputer.controller.CustomSuccessHandler;
 import com.example.md4sbminitestcomputer.service.appuser.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +39,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CustomSuccessHandler customSuccessHandle(){
+        return new CustomSuccessHandler();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 //        httpSecurity.formLogin(Customizer.withDefaults())
 //                .authorizeHttpRequests(
@@ -57,9 +63,10 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID") // Remove cookies after logout
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/error_404", "/css/**", "/js/**", "/images/**").permitAll() // Public URLs
+                        .requestMatchers("/error_404", "/css/**", "/js/**", "/images/**", "/register/**").permitAll() // Public URLs
                         .anyRequest().authenticated() // Protect all other URLs
-                );
+                )
+                .csrf().disable();
         return httpSecurity.build();
     }
 }

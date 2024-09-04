@@ -23,6 +23,11 @@ public class AppRoleService implements IAppRoleService {
     }
 
     @Override
+    public AppRole findByAppRoleName(String name) {
+        return appRoleRepo.findByAppRoleName(name);
+    }
+
+    @Override
     public void save(AppRole appRole) {
         appRoleRepo.save(appRole);
     }
