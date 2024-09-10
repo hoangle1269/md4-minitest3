@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <title>Manufacturer Computer Count</title>
+</head>
+<body>
+<h1>Manufacturer Computer Count</h1>
+<table id="computerList">
+    <thead>
+    <tr>
+        <th>Manufacturer Name</th>
+        <th>Computer Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${count}">
+        <td th:text="${item.manufacturerName}">Manufacturer Name</td>
+        <td th:text="${item.number}">Computer Count</td>
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
